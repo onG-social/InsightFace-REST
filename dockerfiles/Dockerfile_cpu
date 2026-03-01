@@ -9,7 +9,6 @@ RUN apt-get update && \
     libgl1-mesa-glx \
     protobuf-compiler \
     libprotobuf-dev \
-    libbb64-0d \
     libglib2.0-0 \
     libgomp1 \
     gcc \
