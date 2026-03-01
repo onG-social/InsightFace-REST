@@ -10,4 +10,4 @@ exec gunicorn --log-level $LOG_LEVEL\
      -k uvicorn.workers.UvicornWorker\
      --keep-alive 60\
      --timeout 60\
-     if_rest.api.main:app -b 0.0.0.0:18080
+     if_rest.api.main:app -b 0.0.0.0:$PORT
