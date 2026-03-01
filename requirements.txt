@@ -15,7 +15,6 @@ opencv-python-headless==4.8.0.76
 scikit-image
 onnx==1.16.0
 onnxruntime==1.16.3
-onnx-simplifier
 PyTurboJPEG
 exifread
 tritonclient[http,grpc]
