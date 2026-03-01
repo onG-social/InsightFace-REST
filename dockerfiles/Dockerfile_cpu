@@ -6,16 +6,17 @@ ENV LANG=C.UTF-8
 
 RUN apt-get update && \
     apt-get install -y \
-        libgl1-mesa-glx \
-        protobuf-compiler \
-        libprotobuf-dev \
-        libb64-0d \
-        libglib2.0-0 \
-        libgomp1 \
-        gcc \
-        curl \
-        libturbojpeg0 \
-        git && \
+    libgl1-mesa-glx \
+    protobuf-compiler \
+    libprotobuf-dev \
+    libbb64-0d \
+    libglib2.0-0 \
+    libgomp1 \
+    gcc \
+    g++ \
+    curl \
+    libturbojpeg0 \
+    git && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
