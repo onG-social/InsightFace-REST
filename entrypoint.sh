@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
-echo Preparing models...
-python -m if_rest.prepare_models
+# echo Preparing models...
+# python -m if_rest.prepare_models
 
 echo Starting InsightFace-REST using $NUM_WORKERS workers.
 
