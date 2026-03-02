@@ -48,7 +48,7 @@ async def lifespan(_: FastAPI):
         else:
             dl_client = aiohttp.ClientSession(timeout=timeout, connector=TCPConnector(ssl=False))
         processing = await get_processing()
-        await processing.start(dl_client=dl_client)
+        # await processing.start(dl_client=dl_client)
         logger.info(f"Processing module ready!")
     except Exception as e:
         logger.error(e)
