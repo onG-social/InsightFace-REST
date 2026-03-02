@@ -14,45 +14,51 @@ from if_rest.core.processing import get_processing
 from if_rest.logger import logger
 from if_rest.settings import Settings
 
-__version__ = os.getenv('IFR_VERSION', '0.9.5.0')
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
+__version__ = os.getenv("IFR_VERSION", "0.9.5.0")
 
 # Read runtime settings from environment variables
 settings = Settings()
 
 logging.basicConfig(
     level=settings.log_level,
-    format='%(asctime)s %(levelname)s - %(message)s',
-    datefmt='[%H:%M:%S]',
+    format="%(asctime)s %(levelname)s - %(message)s",
+    datefmt="[%H:%M:%S]",
 )
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     """
-    Perform any necessary setup when the application starts up.
-    This includes initializing the `processing` object aiohttp.ClientSession.
-
-    Raises:
-        Exception: If an error occurs during processing initialization.
+    Perform necessary setup when the application starts.
+    Initializes the processing module and aiohttp client session.
     """
 
-    logger.info(f"Starting processing module...")
+    logger.info("Starting processing module...")
     try:
-        timeout = ClientTimeout(total=60.)
+        timeout = ClientTimeout(total=60.0)
+
         if settings.defaults.sslv3_hack:
             ssl_context = ssl._create_unverified_context()
-            ssl_context.set_ciphers('DEFAULT')
-            dl_client = aiohttp.ClientSession(timeout=timeout, connector=TCPConnector(ssl=ssl_context))
+            ssl_context.set_ciphers("DEFAULT")
+            dl_client = aiohttp.ClientSession(
+                timeout=timeout,
+                connector=TCPConnector(ssl=ssl_context),
+            )
         else:
-            dl_client = aiohttp.ClientSession(timeout=timeout, connector=TCPConnector(ssl=False))
+            dl_client = aiohttp.ClientSession(
+                timeout=timeout,
+                connector=TCPConnector(ssl=False),
+            )
+
         processing = await get_processing()
         # await processing.start(dl_client=dl_client)
-        logger.info(f"Processing module ready!")
+
+        logger.info("Processing module ready!")
+
     except Exception as e:
         logger.error(e)
-        exit(1)
+        raise e
+
     yield
 
 
@@ -61,23 +67,25 @@ def get_app() -> FastAPI:
         title="InsightFace-REST",
         description="Face recognition REST API",
         version=__version__,
-        lifespan=lifespan
+        lifespan=lifespan,
     )
 
     application.add_middleware(
-        CORSMiddleware,  # noqa
-        allow_origins=['*'],
+        CORSMiddleware,
+        allow_origins=["*"],
         allow_credentials=True,
-        allow_methods=['*'],
-        allow_headers=['*']
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
+
     application.include_router(v1_router)
+
+    # ✅ Railway health check endpoint
+    @application.get("/health")
+    async def health():
+        return {"status": "ok"}
 
     return application
 
 
 app = get_app()
-
-@app.get("/health")
-async def health():
-    return {"status": "ok"}
