@@ -9,10 +9,10 @@ PORT=${PORT:-8080}
 echo "Starting InsightFace-REST using $NUM_WORKERS workers on port $PORT."
 
 exec gunicorn \
-  --log-level "$LOG_LEVEL" \
-  -w "$NUM_WORKERS" \
+  --log-level ${LOG_LEVEL:-info} \
+  -w ${NUM_WORKERS:-2} \
   -k uvicorn.workers.UvicornWorker \
   --keep-alive 60 \
   --timeout 60 \
   if_rest.api.main:app \
-  -b 0.0.0.0:"$PORT"
+  -b 0.0.0.0:${PORT}
