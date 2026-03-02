@@ -63,7 +63,7 @@ async def lifespan(_: FastAPI):
 
 
 def get_app() -> FastAPI:
-    application = FastAPIOffline(
+    application = FastAPI(
         title="InsightFace-REST",
         description="Face recognition REST API",
         version=__version__,
