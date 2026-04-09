@@ -13,7 +13,7 @@ icc-rt
 numba
 opencv-python-headless==4.8.0.76
 scikit-image
-onnx==1.16.0
+onnx==1.21.0
 onnxruntime==1.16.3
 PyTurboJPEG==1.7.0
 exifread
